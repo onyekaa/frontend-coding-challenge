@@ -1,13 +1,69 @@
 <div ng-controller="ctrlLabourCost">
 	<h2>Labour cost report</h2>
-	
-	<div class="list-table">
-		<div class="header-row">
-			<div class="col-25">Example heading</div>
-		</div>
-		
-		<div class="body-row">
-			<div class="col-25">Example data entry</div>
-		</div>
-	</div>
+		<table class="custom-list-table">
+			<colgroup>
+				<col ng-class="">
+				<col ng-class="{highlight: column == 'workerCount'}">
+				<col ng-class="{highlight: column == 'complianceStats'}">
+				<col ng-class="{highlight: column == 'grossPayTotal'}">
+				<col ng-class="{highlight: column == 'payrollAdminTotal'}">
+				<col ng-class="{highlight: column == 'labourCostTotal'}">
+				<col ng-class="{highlight: column == 'workerCount'}">
+			</colgroup> 
+			<thead>
+				<tr class="header-row">
+
+				<th class="col-3">
+					<a href="" ng-click="sort('name')"><span>Payroll <br/>Provider </span>
+						<i class="icon sort" ng-show="column === 'name'" ng-class="{desc:desc}"></i></a></th>
+				<th class="col-3">
+					<a href="" ng-click="sort('workerCount')"><span>Worker</span>
+						<i class="icon sort" ng-show="column === 'workerCount'" ng-class="{desc:desc}"></i></a></th> 
+				<th class="col-3">
+					<a href="" ng-click="sort('complianceStats.Total')"><span>Compliance <br/>Score </span>
+						<i class="icon sort" ng-show="column === 'complianceStats.Total'" ng-class="{desc:desc}"></i></a></th>
+				<th class="col-4 figures">
+					<a href="" ng-click="sort('grossPayTotal')"><span>Gross <br/>Pay (£) </span>
+						<i class="icon sort" ng-show="column === 'grossPayTotal'" ng-class="{desc:desc}"></i></a></th>
+				<th class="col-3 figures">
+					<a href="" ng-click="sort('payrollAdminTotal')"><span>Payroll <br/>Admin (£)</span> 
+						<i class="icon sort" ng-show="column === 'payrollAdminTotal'" ng-class="{desc:desc}"></i></a></th>
+				<th class="col-3 figures">
+					<a href="" ng-click="sort('labourCostTotal')"><span>Labour<br/>Cost (£) </span>
+						<i class="icon sort" ng-show="column === 'labourCostTotal'" ng-class="{desc:desc}"></i></a> 
+				</th>
+				<th class="col-1 ">Work<br/>Force</th>
+			</tr>
+			</thead>
+			
+			<tr class="body-row animate-repeat" ng-show="column === 'name'">
+				<td>{{ directContractors.name }} </td>
+				<td class="bigger" data-title="Worker Count">{{ directContractors.workerCount }}</td> 
+				<td class="divider" data-title="Compliance Score">{{ (directContractors.complianceStats.Total || 0) | number:0}}% </td>
+				<td class="bigger figures stronger" data-title="Gross Pay (£)">{{ (directContractors.grossPayTotal/100)| number:0 }} </td>
+				<td class="figures" data-title="Payroll Admin (£)">{{ directContractors.payrollAdminTotal || '-'}} </td>
+				<td class="bigger figures" data-title="Labour Cost (£)">{{ (directContractors.labourCostTotal/100) | number:0 }} </td>
+				<td  data-title="Work Force">{{ (directContractors.workerCount / total.workerCount * 100) | number:1}}% </td>	
+			</tr>
+			<tr class="separator" ng-show="column === 'name'"></tr>
+			<tr class="body-row animate-repeat" ng-repeat="provider in providers|orderBy:column:desc">
+				<td class="row-title">{{ provider.name }} </td>
+				<td class="bigger" data-title="Worker Count">{{ provider.workerCount }}</td> 
+				<td class="divider" data-title="Compliance Score">{{ (provider.complianceStats.Total || 0) | number:0}}% </td>
+				<td class="bigger figures stronger" data-title="Gross Pay (£)">{{ (provider.grossPayTotal/100)| number:0 }} </td>
+				<td class="figures" data-title="Payroll Admin (£)">{{ provider.payrollAdminTotal || '-'}} </td>
+				<td class="bigger figures" data-title="Labour Cost (£)">{{ (provider.labourCostTotal/100) | number:0 }} </td>
+				<td data-title="Work Force">{{ (provider.workerCount / total.workerCount * 100) | number:1}}% </td>
+			</tr>
+			<tr class="separator"></tr>
+			<tr class="total-row">
+				<td class="heading stronger row-title">Total </td>
+				<td class="bigger" data-title="Worker Count">{{ total.workerCount }}</td> 
+				<td class="divider" data-title="Compliance Score">{{ (total.complianceStats.Total || 0) | number:0}}% </td>
+				<td class="bigger figures stronger" data-title="Gross Pay (£)">{{ (total.grossPayTotal/100)| number:0 }} </td>
+				<td class="figures" data-title="Payroll Admin (£)">{{ total.payrollAdminTotal || '-'}} </td>
+				<td class="bigger figures" data-title="Labour Cost (£)">{{ (total.labourCostTotal/100) | number:0 }} </td>
+				<td class="stronger" data-title="Work Force"> 100% </td>
+			</tr>
+		</table>
 </div>
